@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  {{super()}}
+  <link rel="stylesheet" href="/static/css/cart.css" type="text/css">
+{% endblock %}
+
+{% block content_main %}
+
+      <h1>Shopping Cart</h1>
+      <h2>Items</h2>
+      <div class="row">
+        {% for order in user_cart %}
+          <div class="col-3 col-md-2">
+            <p><a href="{{ url_for('main.book_detail', book_id=order.book.id) }}">
+               <img src='{{ order.book.cover }}'></a></p>
+          </div>
+          <div class="col-9 col-md-10">
+            {{ order.book.title }} ({{ order.book.author.name }} {{ order.book.author.surname }})
+            - {{ order.book.price }} PLN
+            <a href="{{ url_for('main.delete_from_cart', order_item=order.id) }}">Remove</a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-lg-9"></div>
+        <div class="col-lg-3"> Total price: {{ total_price }} PLN
+          <p></p>
+          <a class="btn btn-success" type="button" href="{{ url_for('main.checkout') }}">Checkout</a>
+        </div>
+      </div>
+
+{% endblock %}
